@@ -1,0 +1,63 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Access Token",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "https://login.microsoftonline.com/c2a928a2-fc21-4a9b-9143-b61cc489d509/oauth2/v2.0/token",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"headers": {
+						"Content-Type": {
+							"value": "application/x-www-form-urlencoded",
+							"type": "Expression"
+						}
+					},
+					"body": {
+						"value": "tenant=c2a928a2-fc21-4a9b-9143-b61cc489d509&client_id=4de488e2-68db-4849-8130-241345167dd4&client_secret=hR~7Q~X3A6CpEq8Iw0faxqqXamBmHs5~Pbe~g&grant_type=client_credentials&scope=https://graph.microsoft.com/.default",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Access Token",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "token",
+					"value": {
+						"value": "@activity('Get Access Token').output.access_token",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"token": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

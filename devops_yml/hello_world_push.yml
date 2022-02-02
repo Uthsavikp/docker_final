@@ -1,0 +1,25 @@
+trigger:
+  branches: 
+    include: ['main/*, b01/*']
+  paths:
+      include: ['/hello_world']
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureCLI@1
+  displayName: 'Azure CLI '
+  inputs:
+    azureSubscription: 'DP_100'
+    scriptLocation: inlineScript
+    inlineScript: 'az acr login --name dockeracrdev'
+
+- task: AzureCLI@2
+  displayName: 'Azure CLI '
+  inputs:
+    azureSubscription: 'DP_100'
+    scriptType: 'pscore'
+    scriptLocation: inlineScript
+    inlineScript: 'az acr build --image hello_world:latest --registry dockeracrdev --file hello_world/Dockerfile hello_world/'
+  

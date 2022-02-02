@@ -1,0 +1,10 @@
+{
+	"name": "UT_KV",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://uthsavikv.vault.azure.net/"
+		}
+	}
+}
